@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Class</title>
+<style type="text/css">
+body{
+	background-color: #2f2f2f;
+}
+#calculadora { 
+	margin: 0 auto;
+ 	display: grid;
+ 	background-color: #353638;
+ 	width: 305px;
+ 	height: 380px;
+ 	grid-template-columns: auto auto auto auto ;
+ 	padding-top: 2px;
+ 	padding-left: 5px;
+  }
+
+.operando{
+
+	padding-top: 25px;
+	background-color:  #1a1a1a;
+	width: 75px;
+	height: 50px;
+	margin: 0 auto;
+	text-align: center;
+	color: white;
+	font-family: "Century Gothic";
+	font-size: 1.5em;
+	transition: 0.1s ease-in-out;
+}
+#resultado{
+	height: 100px;
+	width: 305px;
+	margin: 0 auto;
+	margin-top: 35px;
+	background-color: #0D0D0D;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 5px;
+	color: white;
+	font-size: 1.9em;
+	font-family: "Century Gothic";
+}
+#historial{
+	width: 305px;
+	margin: 0 auto;
+
+	background-color: #0D0D0D;
+	text-align: center;
+	padding-right: 5px;
+	padding-top: 5px;
+	color: white;
+	font-size: 1.3em;
+	opacity: 0.6;
+	font-family: "Century Gothic";
+}
+.operandonumero{
+	padding-top: 25px;
+	background-color: #0d0d0d;
+	width: 75px;
+	height: 50px;
+	margin: 0 auto;
+	text-align: center;
+	color: white;
+	font-family: "Century Gothic";
+	font-size: 1.5em;
+	transition: 0.1s ease-in-out;
+}
+#titulohistorial{
+	font-size: 1.9em;
+	opacity: 1;
+}
+.operando:hover{
+	background-color: #353638;
+
+}
+.operandonumero:hover{
+	background-color: #353638;
+
+}
+#simbolo{
+	text-align: left;
+}
+	</style>
+
+	<script type="text/javascript">
+
+
+		class cuadrado{
+			constructor(numero1){
+				this.numero1 = numero1;
+			}
+			realizar(){
+				let objetoautilizar = this;
+				return new Promise(function (resolve, reject){
+					try {
+						resolve(objetoautilizar.numero1 * objetoautilizar.numero1);
+					}
+					catch(err){
+						reject(err.message);
+					}
+				});
+			}
+		}
+		/* Aquí comienza la clase, es el molde donde enviaremos nuestros números para que nos devuelva
+		el resultado de lo que queramos hacer con esos numeros*/
+		class Operacion{
+			/* Aquí se construye los valores, se le asigna a this.numero1 el valor por parametro
+			numero1, el cual es uno de los numeros ingresados. This hace referencia a la misma
+			clase */
+			constructor(numero1, numero2){
+				this.numero1 = numero1;
+				this.numero2 = numero2;
+			}
+			/* Estos los procedimientos en los cuales se toma el objeto que se esta construyendo 
+			para realizar la operacion arimetica que el usuario haya indicado */
+			sumas(){
+				let objetoautilizar = this;
+				return new Promise(function (resolve, reject)
+				{
+					try 
+					{
+						resolve(objetoautilizar.numero1 + objetoautilizar.numero2);
+					}
+					catch(err) 
+					{
+						reject(err.message);
+					}
+				});
+			}
+			restar(){
+				let objetoautilizar = this;
+
+				return new Promise(function (resolve, reject)
+				{
+					try 
+					{
+						resolve(objetoautilizar.numero1 - objetoautilizar.numero2);
+					}
+					catch(err) 
+					{
+						reject(err.message);
+					}
+				});			}
+			multiplicar(){
+				let objetoautilizar = this;
+
+				return new Promise(function (resolve, reject)
+				{
+					try 
+					{
+						resolve(objetoautilizar.numero1 * objetoautilizar.numero2);
+					}
+					catch(err) 
+					{
+						reject(err.message);
+					}
+				});
+			}
+			division(){
+				let objetoautilizar = this;
+
+				return new Promise(function (resolve, reject)
+				{
+					try 
+					{
+						resolve(objetoautilizar.numero1 / objetoautilizar.numero2);
+					}
+					catch(err) 
+					{
+						reject(err.message);
+					}
+				});
+			}
+		}
+		/* Estas son las variables globales, simboloartimetico guarda cual simbolo para hacer la operacion
+		se esta utilizando, numero 1 y 2 es para guardar el number de la concatenación posterior a presionar 
+		el simbolo igual. Concatenación cambia lo que está dentro del resultado para usarlo luego para guardar
+		a numbero1 */
+		let simboloaritmetico = '';
+		let numero1 = 0;
+		let numero2 = 0;
+		let concatenacion = '';
+		let historial = '<span id="titulohistorial">Historial </span> <br>';
+		/* Esta funcion agarra el parametro de los numeros que ingresa para concatenarlo, verifica 2 opciones:
+			- El numero es mayor a 0, para que no estén poniendo puros 0 al comienzo de la calculadora
+			- El numero es mayor ya a 0 para que permita poner 203 con un 0 después de un numero.
+		*/
+
+		function concatenar(n){
+			if((n > 0) || (Number(concatenacion) > 0)) {
+				concatenacion = concatenacion + n;
+				document.getElementById("resultado").innerHTML = concatenacion;
+			}else{
+				document.getElementById("resultado").innerHTML = 0;
+			}
+		}
+		/* Esta función define el numero 1, ya que es cuando se clickea la operacion aritmetica y
+		ademas de quitar le numero ingresado para concatenar el numero2, asi mismo, vuelve resultado a 0 para
+		que podamos trabajar nuevamente.*/
+
+		function aritmetica(s){
+			simboloaritmetico = s;
+			let numeroingresado = '';
+			numeroingresado = Number(document.getElementById("resultado").innerHTML);
+			concatenacion = '';
+			numero1 = numeroingresado;
+			document.getElementById("resultado").innerHTML = 0;
+
+		}
+		/* Esta función limpia las 2 variables que se mandan a crear el objeto, quita la concatenacion y 
+		respectivamente devuelve el resultado en el DOM a 0 */
+		function limpiar(){
+			numero1 = 0;
+			numero2 = 0;
+			concatenacion = '';
+			document.getElementById("resultado").innerHTML = 0;
+		}
+		/* Esta funcion toma el numero para hacer el simbolo contrario, busca si es diferente de 0
+		para multiplicarlo por 1, en caso de que sea negativo lo vuelve positivo y en caso de que sea 
+		positivo lo vuelve negativo, te amo Mario umu.*/
+		function simbolo(){
+			let cambiasimbolo = 0;
+			cambiasimbolo = Number(document.getElementById("resultado").innerHTML);
+			if(!(cambiasimbolo === 0)){
+				cambiasimbolo = cambiasimbolo * -1;
+				concatenacion = cambiasimbolo;
+				document.getElementById("resultado").innerHTML = concatenacion;
+			}
+		}
+		/*  Esta funcion toma lo que está en display, le elimina el ultimo char y hace que el nuevo display 
+		y concatenacion sean el numero con un char borrado. */
+		function borrar(){
+			let borrar = document.getElementById("resultado").innerHTML;
+			borrar = borrar.slice(0, -1);
+			concatenacion = borrar;
+			document.getElementById("resultado").innerHTML = borrar;
+		}
+		/* Esta funcion instancia una clase que se utiliza para hacer el cuadrado de un numero */ 
+		function cuad(){
+			let numeroingresado = '';
+			numeroingresado = Number(document.getElementById("resultado").innerHTML);
+			numero1 = numeroingresado;
+			let operacioninstanciada = new cuadrado(numero1);
+			operacioninstanciada.realizar().then(function(response){
+				document.getElementById("resultado").innerHTML = response;
+			}, function(error){
+				document.getElementById("resultado").innerHTML = "Math error";
+			});
+
+		}
+		/* Esta función toma el numreo ingresado de segundo para hacer la instancia de la clase para crear 
+		el objeto que posteriormente se usa para hacer las operaciones, nosotros mandamos al crear el objeto
+		creamos unas peticiones que estáran al pendiente y se dolverán con un error o con una respuesta
+		de la misma instancia. */
+		function igualdad(){
+			let numeroingresado = '';
+			numeroingresado = Number(document.getElementById("resultado").innerHTML);
+			numero2 = numeroingresado;
+			let operacioninstanciada = new Operacion(numero1, numero2);
+			switch(simboloaritmetico){
+				case "+":
+					operacioninstanciada.sumas().then(function(response){
+						setTimeout(document.getElementById("resultado").innerHTML = response, 3000);
+						historial = historial + numero1 + " " + simboloaritmetico + " " + numero2 + "=" + response + "<br>";
+						document.getElementById("historial").innerHTML = historial;
+					}, function (error){
+						document.getElementById("resultado").innerHTML = "Math error";
+					}
+
+					);
+
+				break;
+				case "-":
+					operacioninstanciada.restar().then(function(response){
+						document.getElementById("resultado").innerHTML = response;
+						historial = historial + numero1 + " " + simboloaritmetico + " " + numero2 + "=" + response + "<br>";
+						document.getElementById("historial").innerHTML = historial;
+					}, function (error){
+						document.getElementById("resultado").innerHTML = "Math error";
+					}
+
+					);
+				break;
+				case "*":
+					operacioninstanciada.multiplicar().then(function(response){
+						document.getElementById("resultado").innerHTML = response;
+						historial = historial + numero1 + " " + simboloaritmetico + " " + numero2 + "=" + response + "<br>";
+						document.getElementById("historial").innerHTML = historial;
+					}, function (error){
+						document.getElementById("resultado").innerHTML = "Math error";
+					}
+
+					);
+				break;
+				case "/":
+					operacioninstanciada.division().then(function(response){
+						document.getElementById("resultado").innerHTML = response;
+						historial = historial + numero1 + " " + simboloaritmetico + " " + numero2 + "=" + response + "<br>";
+						document.getElementById("historial").innerHTML = historial;
+					}, function (error){
+						document.getElementById("resultado").innerHTML = "Math error";
+					}
+
+					);
+				break;
+			}
+		}
+	</script>
+</head>
+<body>
+	<div > <p id="resultado"></p> <span></span> </div>
+	<div id="calculadora">
+
+		<div class="operando" onclick="cuad()">X <sup>2</sup> </div>
+		<div class="operando" onclick="limpiar()">C</div>
+		<div class="operando" onclick="borrar()">B</div>
+		<div class="operando" onclick="aritmetica('/')">/</div>
+
+		<div class="operandonumero" onclick="concatenar(7)">7</div>
+		<div class="operandonumero" onclick="concatenar(8)">8</div>
+		<div class="operandonumero" onclick="concatenar(9)">9</div>
+		<div class="operando" onclick="aritmetica('*')">X</div>
+
+		<div class="operandonumero" onclick="concatenar(4)">4</div>
+		<div class="operandonumero" onclick="concatenar(5)">5</div>
+		<div class="operandonumero" onclick="concatenar(6)">6</div>
+		<div class="operando" onclick="aritmetica('-')">-</div>
+
+		<div class="operandonumero" onclick="concatenar(1)">1</div>
+		<div class="operandonumero" onclick="concatenar(2)">2</div>
+		<div class="operandonumero" onclick="concatenar(3)">3</div>
+		<div class="operando" onclick="aritmetica('+')">+</div>
+
+
+		<div class="operando" onclick="simbolo()">+/-</div>
+		<div class="operandonumero" onclick="concatenar(0)">0</div>
+		<div class="operando" onclick="concatenar('.')">.</div>
+		<div class="operando" onclick="igualdad()">=</div>
+	</div>
+
+	<div id="historial"><span id="titulohistorial">Historial </span></div>
+</body>
+</html>
